@@ -16,6 +16,7 @@ import com.codingChallenge.task.model.Task;
 import com.codingChallenge.task.service.TaskService;
 import com.codingChallenge.task.utility.GetIdByUsername;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 
 
@@ -49,6 +50,28 @@ public class TaskController {
 	@GetMapping("/all-tasks")
 	public List<Task> getAllTasks(){
 		return taskService.getAllTasks();
+	}
+	
+	@GetMapping("/{taskId}")
+	public ResponseEntity<?> getTaskById(@PathVariable int taskId, MessageDto dto){
+		try {
+			Task task = taskService.findById(taskId);
+			return ResponseEntity.ok(task);
+		}catch (InputValidationException e) {
+			dto.setMsg(e.getMessage());
+			return ResponseEntity.badRequest().body(dto);
+		}
+	}
+	
+	@PostMapping("/{taskId}/update")
+	public ResponseEntity<?> updateTask(@PathVariable int taskId, @RequestBody Task task, MessageDto dto){
+		try {
+			Task updatedTask = taskService.updateTask(taskId, task);
+			return ResponseEntity.ok(updatedTask);
+		} catch (InputValidationException e) {
+			dto.setMsg(e.getMessage());
+			return ResponseEntity.badRequest().body(dto);
+		}
 	}
 
 }
