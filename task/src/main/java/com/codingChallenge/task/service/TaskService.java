@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.codingChallenge.task.exception.InputValidationException;
 import com.codingChallenge.task.model.Customer;
 import com.codingChallenge.task.model.Task;
+import com.codingChallenge.task.repository.CustomerRepository;
 import com.codingChallenge.task.repository.TaskRepository;
 
 
@@ -20,6 +21,9 @@ public class TaskService {
 	
 	@Autowired
 	private TaskRepository taskRepository;
+	
+	@Autowired
+	private CustomerRepository customerRepository;
 
 	public Task addTask(int customerId, Task task) throws InputValidationException {
 		Customer customer = customerService.getById(customerId);
@@ -53,5 +57,18 @@ public class TaskService {
 		previousTask.setDueDate(task.getDueDate());
 		
 		return taskRepository.save(previousTask);
+	}
+
+	public Object deleteTask(int customerId, int taskId) throws InputValidationException {
+		Optional<Task> tOption = taskRepository.findById(taskId);
+		if(tOption.isEmpty()) {
+			throw new InputValidationException("Invalid ID");
+		}
+		Optional<Customer> cOption = customerRepository.findById(customerId);
+		if(cOption.isEmpty()) {
+			throw new InputValidationException("Invalid ID");
+		}
+		
+		return taskRepository.deleteTask(taskId, customerId);
 	}
 }

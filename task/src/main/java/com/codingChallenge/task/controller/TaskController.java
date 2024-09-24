@@ -15,6 +15,8 @@ import com.codingChallenge.task.exception.InputValidationException;
 import com.codingChallenge.task.model.Task;
 import com.codingChallenge.task.service.TaskService;
 import com.codingChallenge.task.utility.GetIdByUsername;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -72,6 +74,20 @@ public class TaskController {
 			dto.setMsg(e.getMessage());
 			return ResponseEntity.badRequest().body(dto);
 		}
+	}
+	
+	@DeleteMapping("/{taskId}/delete")
+	public ResponseEntity<?> deleteTask(Principal principal, @PathVariable int taskId, MessageDto dto) {
+		try {
+			String customerUserName = principal.getName();
+			int customerId = getIdByUsername.getIdByUsername(customerUserName);
+			System.out.println(customerId);
+			return ResponseEntity.ok(taskService.deleteTask(customerId, taskId));
+		}catch (InputValidationException e) {
+			dto.setMsg(e.getMessage());
+			return ResponseEntity.badRequest().body(dto);
+		}
+		
 	}
 
 }
