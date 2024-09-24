@@ -18,7 +18,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import com.codingChallenge.task.service.UserService;
 
 
-
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -30,9 +29,7 @@ public class SecurityConfig {
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 	    http.csrf(AbstractHttpConfigurer::disable)
 	        .authorizeHttpRequests(auth -> auth
-	            .requestMatchers("/auth/token").permitAll()
-	            .requestMatchers("/auth/signup").permitAll()
-	            
+	           
                 .anyRequest().permitAll()
 	        )
 	        .sessionManagement(session -> session

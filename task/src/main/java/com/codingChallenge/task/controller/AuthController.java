@@ -28,12 +28,16 @@ public class AuthController {
 	
     @PostMapping("/auth/token")
     public String createAuthenticationToken(@RequestBody User authenticationRequest) throws Exception {
+    	System.out.println(authenticationRequest.getUsername());
+    	System.out.println(authenticationRequest.getPassword());
  
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword())
             );
         } catch (Exception e) {
+        	System.out.println("inside exception in auth controller");
+        	System.out.println(e);
             throw new Exception("Incorrect username or password", e);
         }
  

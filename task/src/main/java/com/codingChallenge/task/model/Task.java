@@ -7,6 +7,8 @@ import com.codingChallenge.task.enums.StatusType;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -26,8 +28,10 @@ public class Task {
 	
 	private LocalDate dueDate;
 	
+	@Enumerated(EnumType.STRING)
 	private PriorityType priority;
 	
+	@Enumerated(EnumType.STRING)
 	private StatusType status;
 
 	@ManyToOne
@@ -81,5 +85,14 @@ public class Task {
 	public void setStatus(StatusType status) {
 		this.status = status;
 	}
+
+	public Customer getCustomer() {
+		return customer;
+	}
+
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
+	}
+	
 	
 }
